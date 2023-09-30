@@ -6,16 +6,21 @@ const Register = () => {
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const [passwortVisible, setPasswordVisible] = useState(false);
+
   const handleRegister = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
+    const accepted = e.target.term.checked;
 
     if (password.length < 6) {
       setError("Password should be at least 6 characters");
       return;
     } else if (!/[A.Z]/.test(password)) {
       setError("Yoyr password should have at least one upper character");
+      return;
+    } else if (!accepted) {
+      setError("Please accept Terms.");
       return;
     }
     setError("");
@@ -60,25 +65,41 @@ const Register = () => {
                   <label className="label">
                     <span className="label-text">Password</span>
                   </label>
-                  <input
-                    type={passwortVisible ? "text" : "password"}
-                    name="password"
-                    placeholder="password"
-                    className="input input-bordered"
-                    required
-                  />
-                  <span onClick={() => setPasswordVisible(!passwortVisible)}>
-                    {passwortVisible ? (
-                      <AiFillEyeInvisible></AiFillEyeInvisible>
-                    ) : (
-                      <AiFillEye></AiFillEye>
-                    )}
-                  </span>
+                  <div className="flex items-center">
+                    <input
+                      type={passwortVisible ? "text" : "password"}
+                      name="password"
+                      placeholder="password"
+                      className="input input-bordered"
+                      required
+                    />
+                    <span
+                      className="absolute left-[210px]"
+                      onClick={() => setPasswordVisible(!passwortVisible)}
+                    >
+                      {passwortVisible ? (
+                        <AiFillEyeInvisible></AiFillEyeInvisible>
+                      ) : (
+                        <AiFillEye></AiFillEye>
+                      )}
+                    </span>
+                  </div>
                   <label className="label">
                     <a href="#" className="label-text-alt link link-hover">
                       Forgot password?
                     </a>
                   </label>
+                  <div className="">
+                    <input
+                      className="mr-2"
+                      type="checkbox"
+                      name="term"
+                      id="term"
+                    />
+                    <label htmlFor="term">
+                      Accept our terms and conditions
+                    </label>
+                  </div>
                   {error && <p className="text-red-700">{error}</p>}
                   {success && <p className="text-green-600">{success}</p>}
                 </div>
